@@ -11,12 +11,10 @@
     "react-scripts": "2.1.5"
   },
   "scripts": {
-    "watch": "json-server server/index.js  --routes server/routes.json --middlewares server/handle-delay.js server/handle-ads.js",
-    "start": "set PORT=8000 && react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "precommit": "pretty-quick --staged"
+    "start": "json-server server/index.js  --routes server/routes.json --middlewares server/handle-delay.js server/handle-ads.js",
+    "dev": "webpack --mode development --output ./public/main.js",
+    "build": "webpack --mode production --output ./public/main.js",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -28,11 +26,16 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "css-loader": "^3.0.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
+    "mini-css-extract-plugin": "^0.7.0",
     "prettier": "^1.16.4",
-    "pretty-quick": "^1.10.0"
+    "pretty-quick": "^1.10.0",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
   }
 }
