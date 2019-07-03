@@ -1,28 +1,21 @@
 import React from "react";
 
-export default () => {
+export default props => {
   return (
     <div className=" col-xs-12 col-lg-12 pt-3 pb-3 pl-0">
-      <div className="dropdown open">
-        <button
-          className="btn btn-primary dropdown-toggle"
-          type="button"
-          id="triggerId"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+      <select
+        name=""
+        onChange={e => props.handleChange(e)}
+        className="p-2 btn btn-primary dropdown-toggle"
+        defaultValue=""
+      >
+        <option disabled value="">
           Sort By
-        </button>
-        <div className="dropdown-menu" aria-labelledby="triggerId">
-          <a className="dropdown-item" href="#">
-            Action
-          </a>
-          <a className="dropdown-item" href="#">
-            Disabled action
-          </a>
-        </div>
-      </div>
+        </option>
+        <option value="id">Id</option>
+        <option value="price">Price</option>
+        <option value="size">Size</option>
+      </select>
     </div>
   );
 };

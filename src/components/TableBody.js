@@ -4,14 +4,15 @@ import Loading from "./Loading";
 import Ads from "./Ads";
 import Product from "./Product";
 
-export default () => {
+export default ({ selected }) => {
   const [state, setstate] = React.useState({
     products: [],
     loading: true,
     cache: [],
     page: 1,
     loadingText: "Loading...",
-    limit: 20
+    limit: 20,
+    sortBy: ""
   });
 
   const [getMore, setGetMore] = React.useState(false);
@@ -39,7 +40,9 @@ export default () => {
 
   React.useEffect(() => {
     if (state.page > 1) {
-      getData(`?_page=${state.page}&_limit=${state.limit}`).then(data => {
+      getData(
+        `?_page=${state.page}&_limit=${state.limit}&_sort=${state.sortBy}`
+      ).then(data => {
         let tempProducts = [];
         data.forEach(product => {
           const singleProduct = { ...product };
@@ -56,7 +59,8 @@ export default () => {
             setstate({
               ...state,
               cache: tempProducts,
-              loading: true
+              loading: true,
+              sortBy: selected
             });
           }
         });
@@ -65,14 +69,18 @@ export default () => {
   }, [state.page]);
 
   React.useEffect(() => {
-    fetchInitialDataFromCache();
+    fetchDataFromCache();
   }, [state.cache]);
+
+  React.useEffect(() => {
+    handleSortAction();
+  }, [selected]);
 
   React.useEffect(() => {
     loadMore();
   }, [getMore]);
 
-  const fetchInitialDataFromCache = () => {
+  const fetchDataFromCache = () => {
     let displayedProducts = [];
     state.cache.forEach(product => {
       let index = state.cache.indexOf(product);
@@ -119,6 +127,25 @@ export default () => {
         loading: true
       });
     }
+  };
+
+  const handleSortAction = () => {
+    const currentProducts = state.products;
+    currentProducts.sort((first, second) => {
+      const a = first[selected],
+        b = second[selected];
+      if (selected === "id") {
+        // ids are string so sort by string using the local compare
+        return a.localeCompare(b);
+      }
+      // all others are numbers
+      return parseInt(a - b);
+    });
+    setstate({
+      ...state,
+      products: currentProducts,
+      sortBy: selected
+    });
   };
 
   return (
