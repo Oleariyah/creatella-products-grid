@@ -1,5 +1,6 @@
 import React from "react";
 import getData from "../services/GetData";
+import Loading from "./Loading";
 
 export default () => {
   const [state, setstate] = React.useState({
@@ -7,7 +8,7 @@ export default () => {
     loading: true,
     cache: [],
     page: 1,
-    endingText: "",
+    loadingText: "Loading...",
     limit: 20
   });
 
@@ -46,7 +47,8 @@ export default () => {
             setstate({
               ...state,
               cache: [],
-              endingText: "~ end of catalogue ~"
+              loading: true,
+              loadingText: "~ end of catalogue ~"
             });
           } else {
             setstate({
@@ -105,12 +107,14 @@ export default () => {
       setstate({
         ...state,
         products: remainingCache,
-        cache: []
+        cache: [],
+        loading: true
       });
     } else if (getMore === true && state.cache.length === 0) {
       setstate({
         ...state,
-        page: state.page + 1
+        page: state.page + 1,
+        loading: true
       });
     }
   };
@@ -135,19 +139,36 @@ export default () => {
 
   return (
     <tbody>
-      {!state.loading
-        ? state.products.map(product => {
-            return (
-              <tr key={product.id}>
-                <td scope="row">{product.face}</td>
-                <td>{product.size}</td>
-                <td>{centToDollar(product.price)}</td>
-                <td>{product.id}</td>
-                <td>{formatDate(product.date)}</td>
-              </tr>
-            );
-          })
-        : null}
+      {state.products.map(product => {
+        return (
+          <tr key={product.id}>
+            <td>{product.face}</td>
+            <td>{product.size}</td>
+            <td>{centToDollar(product.price)}</td>
+            <td>{product.id}</td>
+            <td>{formatDate(product.date)}</td>
+          </tr>
+        );
+      })}
+      {state.loading ? (
+        state.loadingText === "Loading..." ? (
+          <tr>
+            <td>{""}</td>
+            <td>{""}</td>
+            <td className="d-flex justify-content-center">
+              <Loading />
+            </td>
+          </tr>
+        ) : (
+          <tr>
+            <td>{""}</td>
+            <td>{""}</td>
+            <td className="d-flex justify-content-center">
+              <h3>{state.loadingText}</h3>
+            </td>
+          </tr>
+        )
+      ) : null}
     </tbody>
   );
 };
