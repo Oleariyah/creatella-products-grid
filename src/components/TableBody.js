@@ -1,6 +1,8 @@
 import React from "react";
 import getData from "../services/GetData";
 import Loading from "./Loading";
+import Ads from "./Ads";
+import Product from "./Product";
 
 export default () => {
   const [state, setstate] = React.useState({
@@ -119,36 +121,17 @@ export default () => {
     }
   };
 
-  const centToDollar = val => `$${(val / 100).toFixed(2)}`;
-  const formatDate = val => {
-    const today = new Date();
-    const productDate = new Date(val);
-
-    // check month
-    if (today.getMonth() === productDate.getMonth()) {
-      const dateDiff = today.getDate() - productDate.getDate();
-      // if less than a week
-      if (dateDiff < 7 && dateDiff !== 1) {
-        return `${dateDiff} days ago`;
-      } else if (dateDiff === 1) {
-        return `${dateDiff} day ago`;
-      }
-    }
-    return productDate.toDateString();
-  };
-
   return (
     <tbody>
-      {state.products.map(product => {
-        return (
-          <tr key={product.id}>
-            <td>{product.face}</td>
-            <td>{product.size}</td>
-            <td>{centToDollar(product.price)}</td>
-            <td>{product.id}</td>
-            <td>{formatDate(product.date)}</td>
-          </tr>
-        );
+      {state.products.map((product, index) => {
+        if (index % 20 === 0 && index !== 0) {
+          return [
+            <Product product={product} key={product.id} />,
+            <Ads key={index} />
+          ];
+        } else {
+          return <Product product={product} key={product.id} />;
+        }
       })}
       {state.loading ? (
         state.loadingText === "Loading..." ? (
