@@ -17,6 +17,7 @@ export default ({ selected }) => {
 
   const [getMore, setGetMore] = React.useState(false);
 
+  //get initial data from the API
   React.useEffect(() => {
     if (state.products.length === 0) {
       getData(`?_page=${state.page}&_limit=${state.limit}`).then(data => {
@@ -34,6 +35,7 @@ export default ({ selected }) => {
         });
       });
     }
+    //trigger event when scrolled reach windows bottom
     window.addEventListener("scroll", scrollReachedBottom);
     return () => window.removeEventListener("scroll", scrollReachedBottom);
   }, []);
@@ -68,14 +70,17 @@ export default ({ selected }) => {
     }
   }, [state.page]);
 
+  //display products
   React.useEffect(() => {
     fetchDataFromCache();
   }, [state.cache]);
 
+  //sort products
   React.useEffect(() => {
     handleSortAction();
   }, [selected]);
 
+  //get more products
   React.useEffect(() => {
     loadMore();
   }, [getMore]);
@@ -151,6 +156,7 @@ export default ({ selected }) => {
   return (
     <tbody>
       {state.products.map((product, index) => {
+        //display ads when products count is 20
         if (index % 20 === 0 && index !== 0) {
           return [
             <Product product={product} key={product.id} />,
