@@ -8,7 +8,7 @@
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-loading": "^2.0.3",
-    "react-scripts": "2.1.5"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "json-server server/index.js  --routes server/routes.json --middlewares server/handle-delay.js server/handle-ads.js",
@@ -35,7 +35,7 @@
     "mini-css-extract-plugin": "^0.7.0",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
-    "webpack": "^4.35.2",
+    "webpack": "^5.105.2",
     "webpack-cli": "^3.3.5"
   }
 }
